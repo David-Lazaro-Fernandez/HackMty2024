@@ -2,3 +2,4 @@
 2024-09-15 02:28:30,537 - INFO - Loading weights from ultralytics/yolo/v8/detect/deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7... Done!
 2024-09-15 02:28:53,258 - INFO - Loading weights from ultralytics/yolo/v8/detect/deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7... Done!
 2024-09-15 02:36:12,155 - INFO - Loading weights from ultralytics/yolo/v8/detect/deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7... Done!
+2024-09-15 02:48:26,808 - INFO - Loading weights from ultralytics/yolo/v8/detect/deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7... Done!
