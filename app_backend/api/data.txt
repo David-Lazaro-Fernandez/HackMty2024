@@ -1,1 +1,29 @@
-¿Puedo hablar con una empresa? ¿Sí? ¿Sí? Eh... Ah, ok. Este... ¿Les vas a hablar de...? No, tú le... Yo... Eh... Que era de Softec. Ah, ok. Claro, claro. Hola. Hola. Este... Tengo una pregunta. ¿De qué Softec o cómo...? ¿De qué Softec? Bueno, pues Softec es una empresa regiomontana. Eh... Fundada en el 82, si no me equivoco. Y... Pues Softec nos dedicamos a todo el área de tecnología de la información. Por ejemplo, yo estoy en el área de CUA, que es de calidad de software. Pero aquí hay muchas personas de soporte, de desarrollo, de innovación. Entre otras. Inclusive... Eh... RH. Ah. ¿Sí? Ok. Y... Bueno, eso es como... Aparte, este... Eso... O sea, he visto como varios aquí que traigan CV y así. ¿Cómo que es lo que buscan, más o menos? Claro. Eh... Lo que estamos buscando es a chicos que de verdad les busquen una oportunidad, ¿no? Y les guste lo que están haciendo. ¿Qué es lo que están haciendo? Programar, ser creativos, ser novedosos. Entonces, lo que realmente nosotros buscamos es esa... Esas ganas de sobresalir, esas ganas de salir adelante. Y obviamente, si tienes lo básico de ciertos lenguajes de programación, cierta tecnología, no te apures con que tengas la actitud y un poco de ese talento. Nosotros terminamos de pulirlo ya una vez que entras a software. Ah, sí. ¿Y cuáles son los proyectos con los que trabajas? Bueno, son muchísimos. O sea, son muchos clientes con los que trabajamos. Eh... Yo personalmente trabajé con un cliente que... Puedo decir el nombre porque ya terminó ese proyecto, esa empresa. Se llamaba Luna. Luna. Ellos lo que hacían era que vendían una tecnología de realidad aumentada, como si fuera un filtro de Instagram, que lo que hacía es que los usuarios se podían grabar con su teléfono y te recomendaba los mejores lentes en base a tu tipo de rostro y ciertas métricas de tu cara. Entonces, esas tecnologías se las vendían de que adeblen a ese tipo de empresas y yo me encargaba de asegurarme que, pues, ese filtro o esa tecnología no se fuera con ningún error o con los mínimos posibles. Entonces, tenía que crear escritos de automatización, simular la cámara, porque, pues, no siempre podía estar yo grabándome y todo eso. Entonces, de ese tipo de clientes tenemos, o sea, que se les denomina high-tech, es decir, muy tecnológicos, pero también tenemos proyectos de banca, de retail, botelería, etc. Bueno, gracias. No, por nada. Mucho gusto.
+1
+00:00:00,000 --> 00:00:06,000
+Bueno, ¿tenía la pregunta de qué es Softik o el contexto de todo?
+
+2
+00:00:06,000 --> 00:00:07,000
+¿Perdón?
+
+3
+00:00:07,000 --> 00:00:09,000
+¿El contexto de qué es Softik o...?
+
+4
+00:00:09,000 --> 00:00:12,000
+Mira, tenemos de...
+
+5
+00:00:13,000 --> 00:00:15,000
+¿Quién te puede responder esa pregunta?
+
+6
+00:00:15,000 --> 00:00:18,000
+Es que para que sea más comercial, te puedo decir quién.
+
+7
+00:00:18,000 --> 00:00:20,000
+Ah, ok. Sí.
+
+

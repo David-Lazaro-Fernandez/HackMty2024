@@ -11,15 +11,15 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 load_dotenv()
 
 class RAG():
-    def __init__(self, context: str):
+    def __init__(self, context: str, file_name: str, parametrization: int = 2):
         with open("./data.txt", "w", encoding="utf-8") as f:
             f.write(context)
 
         TEMPLATE = """
             Eres un asistente para el analisis de conversaciones, tu tarea es ayudar a interpretar y resumir conversaciones para proveer informacion
-            importante y de ayuda. Se claro con tus respuestas y no des muchas vueltas en tus respuestas.
+            importante y de ayuda. Se claro con tus respuestas y procura ser breve.
 
-            Pregunta: {question} 
+            Pregunta: {question}
 
             Contexto: {context} 
 
@@ -30,11 +30,11 @@ class RAG():
         self.documents = self.loader.load()
         self.embeddings_model = OpenAIEmbeddings(api_key=os.getenv("OPEN_AI_KEY"))
         self.llm = ChatOpenAI(model_name = "tgi", base_url=os.getenv("FRIDA_AI_BASE_URL"), api_key=os.getenv("FRIDA_KEY"))
-        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=150)
         self.chunks = self.text_splitter.split_documents(self.documents)
-        self.db = Chroma.from_documents(self.chunks, embedding = self.embeddings_model)
+        self.db = Chroma.from_documents(self.chunks, embedding = self.embeddings_model, persist_directory=f"./chroma_db/{file_name}")
         self.prompt = PromptTemplate.from_template(template=TEMPLATE)
-        self.retriever = self.db.as_retriever()
+        self.retriever = self.db.as_retriever(search_kwargs={"k": parametrization})
         self.chain = (
             {"context": self.retriever | self._format_docs, "question": RunnablePassthrough()} | self.prompt | self.llm | StrOutputParser()
         )

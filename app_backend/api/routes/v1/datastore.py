@@ -5,6 +5,7 @@ import os
 import logging
 from fastapi import APIRouter, File, UploadFile
 from helpers.firebase_helper import firebase
+from fastapi.responses import Response
 
 # Logger configuration
 logger = logging.getLogger(__name__)
@@ -41,3 +42,17 @@ async def list_audio_files():
         return {"message": "Error listing files."}
 
     return {"files": files}
+
+@datastore.get("/download")
+async def download_file(file_name: str, file_type: str, media_type: str):
+    """
+    This endpoint downloads a file from the Firebase storage.
+    """
+    try:
+        file = await firebase.get_file(file_name=file_name, file_type=file_type, unique_id="12345")
+        headers = {'Content-Disposition': f'attachment; filename={file_name}'}
+    except Exception as e:
+        logger.error(f"Error downloading file: {e}")
+        return {"message": "Error downloading file."}
+
+    return Response(file.getvalue(), headers=headers, media_type=media_type)
