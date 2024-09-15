@@ -6,7 +6,7 @@ from fastapi import APIRouter, File, UploadFile
 from tempfile import NamedTemporaryFile
 
 router = APIRouter()
-ai = Agent("openai")
+AI = Agent("openai")
 
 @router.post("/transcript")
 def upload_audio_file(file: UploadFile = File(...)):
@@ -19,7 +19,7 @@ def upload_audio_file(file: UploadFile = File(...)):
         with open(file.filename, "wb") as temp_file:
             temp_file.write(contents)
 
-        text = ai.transcript_to_text(file_object=file.filename)
+        text = AI.transcript_to_text(file_object=file.filename)
     except Exception:
         return {"message": "An error occurred while processing the audio file."}
 
