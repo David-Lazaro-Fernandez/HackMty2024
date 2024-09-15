@@ -54,16 +54,34 @@ if page == "home":
             navigate_to("page3")
 
 elif page == "page1":
-    st.write("This is Page 1 content.")
+    st.subheader("Upload videos to start analyzing.")
+    st.divider()
+    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
+    
+    if uploaded_file is not None:
+        st.write("Uploaded file:", uploaded_file.name)
+    
     if st.button("Back to Home"):
         navigate_to("home")
 
 elif page == "page2":
-    st.write("This is Page 2 content.")
+    st.subheader("Upload videos to start analyzing.")
+    st.divider()
+    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
+    
+    if uploaded_file is not None:
+        st.write("Uploaded file:", uploaded_file.name)
+    
     if st.button("Back to Home"):
         navigate_to("home")
 
 elif page == "page3":
-    st.write("This is Page 3 content.")
+    st.subheader("Upload videos to start analyzing.")
+    st.divider()
+    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
+    
+    if uploaded_file is not None:
+        st.write("Uploaded file:", uploaded_file.name)
+    
     if st.button("Back to Home"):
         navigate_to("home")
