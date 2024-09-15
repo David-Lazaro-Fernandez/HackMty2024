@@ -1,6 +1,9 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.v1.audio import router
+
+os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
 app = FastAPI()
 
