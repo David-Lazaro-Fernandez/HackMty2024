@@ -40,6 +40,31 @@ def plot_sentiment_over_time(sentiments):
 
     # Display plot in Streamlit
     st.pyplot(plt)
+
+def ask_rag(prompt,file_name, parametrization):
+    url = "http://10.22.238.73:8000/v1/audio/rag"
+    
+    # Parámetros que se enviarán en la solicitud GET
+    params = {
+        "question": prompt,
+        "file_name": file_name,
+        "parametrization": parametrization
+    }
+    
+    try:
+        # Hacer la solicitud GET
+        response = requests.get(url, params=params, headers={"accept": "application/json"})
+        
+        # Verificar si la solicitud fue exitosa
+        if response.status_code == 200:
+           return response.json()  # Retornar la respuesta en formato JSON
+        else:
+            return f"Error: {response.status_code} - {response.text}"
+    
+    except requests.RequestException as e:
+        # Manejo de errores en caso de fallo en la solicitud
+        return f"Error en la solicitud: {e}"
+
     
 # Check the query parameters to determine which page to display
 query_params = st.query_params
@@ -73,10 +98,7 @@ if page == "home":
         if st.button("View", key="3"):
             navigate_to("page3")
 
-
 elif page == "page1":
-    
-
     st.subheader("Upload videos to start analyzing.")
     st.divider()
     uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
@@ -90,27 +112,10 @@ elif page == "page1":
         
         if upload_response.status_code == 200:
             st.success("File uploaded successfully!")
-
-            if st.button("Download Tagged Video"):
-                download_url = f"http://10.22.238.73:8000/v1/datastore/download?file_name=results.mp4&file_type=video&media_type=video%2Fmp4"
-                st.markdown(f"[Download Video]({download_url})")
-                download = requests.get(download_url)
-                if download.status_code == 200:
-                    st.success("Tagged video download in progress")
-                    
             
-            if st.button("Download Heatmap"):
-
-                download_url = f"http://10.22.238.73:8000/v1/datastore/download?file_name=heatmap_new.mp4&file_type=video&media_type=video%2Fmp4"
-                st.markdown(f"[Download Video]({download_url})")
-                download = requests.get(download_url)
-                if download.status_code == 200:
-                    st.success("Heatmap video download in progress")
-                    
-                else:
-                    st.error("Failed to analyze the file.")
-        else:
-            st.error("Failed to upload file.")
+            if st.button("Analyze File"):
+                # Call the analysis endpoint
+                analyze_url = f"http://"
     
     if st.button("Back to Home"):
         navigate_to("home")
@@ -148,15 +153,17 @@ elif page == "page2":
                     # Plot sentiment over time
                     st.subheader("Sentiment Over Time:")
                     plot_sentiment_over_time(analysis_result["transcription"]["sentiment"])
-
-
-                    
-
-                    
                 else:
                     st.error("Failed to analyze the file.")
         else:
             st.error("Failed to upload file.")
+
+        prompt = st.chat_input("Preguntame algo acerca de la conversacion:")
+        file_name = f'{uploaded_file.name}'
+        parametrization = 2
+        if prompt:
+            st.subheader('🤖 Chatbot')
+            st.write(ask_rag(prompt,file_name, parametrization)["answer"])
     
     if st.button("Back to Home"):
         navigate_to("home")
