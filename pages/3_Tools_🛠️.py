@@ -99,6 +99,8 @@ if page == "home":
             navigate_to("page3")
 
 elif page == "page1":
+    
+
     st.subheader("Upload videos to start analyzing.")
     st.divider()
     uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
@@ -112,10 +114,27 @@ elif page == "page1":
         
         if upload_response.status_code == 200:
             st.success("File uploaded successfully!")
+
+            if st.button("Download Tagged Video"):
+                download_url = f"http://10.22.238.73:8000/v1/datastore/download?file_name=results.mp4&file_type=video&media_type=video%2Fmp4"
+                st.markdown(f"[Download Video]({download_url})")
+                download = requests.get(download_url)
+                if download.status_code == 200:
+                    st.success("Tagged video download in progress")
+                    
             
-            if st.button("Analyze File"):
-                # Call the analysis endpoint
-                analyze_url = f"http://"
+            if st.button("Download Heatmap"):
+
+                download_url = f"http://10.22.238.73:8000/v1/datastore/download?file_name=heatmap_new.mp4&file_type=video&media_type=video%2Fmp4"
+                st.markdown(f"[Download Video]({download_url})")
+                download = requests.get(download_url)
+                if download.status_code == 200:
+                    st.success("Heatmap video download in progress")
+                    
+                else:
+                    st.error("Failed to analyze the file.")
+        else:
+            st.error("Failed to upload file.")
     
     if st.button("Back to Home"):
         navigate_to("home")
