@@ -9,10 +9,13 @@ load_dotenv()
 
 class Agent():
     def __init__(self, provider: str):
-        self.inference_provider = provider
-        self.client = OpenAI(
-            api_key=os.getenv("OPEN_AI_KEY")
-        )
+        kwargs = {
+            "api_key": os.getenv("FRIDA_AI_KEY"),
+            "base_url": os.getenv("FRIDA_AI_BASE_URL")
+        } if provider == "firda" else {
+            "api_key": os.getenv("OPEN_AI_KEY")
+        }
+        self.client = OpenAI(**kwargs)
     
     def transcript_to_text(self, file_object: bytes):
         with open(file_object, "rb") as audio_file:
@@ -20,6 +23,5 @@ class Agent():
                 model="whisper-1", 
                 file=audio_file
             )
-
 
         return transcription.text
