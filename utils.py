@@ -9,11 +9,21 @@
 -------------------------------------------------
 """
 from ultralytics import YOLO
+import logging
 import streamlit as st
 import cv2
 from PIL import Image
 import tempfile
 import config
+
+# Configure logging
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[
+                        logging.FileHandler("output.txt"),
+                        logging.StreamHandler()
+                    ])
+
 
 def _display_detected_frames(conf, model, st_count, st_frame, image):
     """
@@ -29,26 +39,13 @@ def _display_detected_frames(conf, model, st_count, st_frame, image):
 
     # Predict the objects in the image using YOLOv8 model
     res = model.predict(image, conf=conf)
-    
-    inText = 'Vehicle In'
-    outText = 'Vehicle Out'
-    if config.OBJECT_COUNTER1 != None:
-        for _, (key, value) in enumerate(config.OBJECT_COUNTER1.items()):
-            inText += ' - ' + str(key) + ": " +str(value)
-    if config.OBJECT_COUNTER != None:
-        for _, (key, value) in enumerate(config.OBJECT_COUNTER.items()):
-            outText += ' - ' + str(key) + ": " +str(value)
-    
-    # Plot the detected objects on the video frame
-    st_count.write(inText + '\n\n' + outText)
     res_plotted = res[0].plot()
     st_frame.image(res_plotted,
                    caption='Detected Video',
                    channels="BGR",
                    use_column_width=True
                    )
-
-
+    
 @st.cache_resource
 def load_model(model_path):
     """
@@ -90,6 +87,8 @@ def infer_uploaded_image(conf, model):
 
     if source_img:
         if st.button("Execution"):
+            st.divider()
+            st.subheader("Tagged Image")
             with st.spinner("Running..."):
                 res = model.predict(uploaded_image,
                                     conf=conf)
@@ -125,6 +124,8 @@ def infer_uploaded_video(conf, model):
 
     if source_video:
         if st.button("Execution"):
+            st.divider()
+            st.subheader("Tagged Live")
             with st.spinner("Running..."):
                 try:
                     config.OBJECT_COUNTER1 = None

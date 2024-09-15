@@ -3,6 +3,8 @@ import streamlit as st
 
 import config
 from utils import load_model, infer_uploaded_image, infer_uploaded_video, infer_uploaded_webcam
+
+st.title("Visualize customer behavior 🔎")
     
 # Opciones del modelo
 task_type = st.sidebar.selectbox(
@@ -43,10 +45,16 @@ source_selectbox = st.sidebar.selectbox(
 
 source_img = None
 if source_selectbox == config.SOURCES_LIST[0]:  # Imagen
+    st.divider()
+    st.subheader("Raw Image")
     infer_uploaded_image(confidence, model)
 elif source_selectbox == config.SOURCES_LIST[1]:  # Video
+    st.divider()
+    st.subheader("Raw Video")
     infer_uploaded_video(confidence, model)
 elif source_selectbox == config.SOURCES_LIST[2]:  # Webcam
+    st.divider()
+    st.subheader("Raw Live")
     infer_uploaded_webcam(confidence, model)
 else:
     st.error("Currently only 'Image' and 'Video' source are implemented")
