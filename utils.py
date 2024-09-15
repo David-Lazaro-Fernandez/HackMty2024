@@ -16,6 +16,14 @@ from PIL import Image
 import tempfile
 import config
 
+# Configure logging
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[
+                        logging.FileHandler("output.txt"),
+                        logging.StreamHandler()
+                    ])
+
 
 def _display_detected_frames(conf, model, st_count, st_frame, image):
     """
