@@ -56,10 +56,15 @@ async def analyze_audio_file(file_name: str):
 
         clean_text = " ".join(sentences)
 
+        rag_engine = RAG(context=clean_text, file_name=file_name)
+        summary = rag_engine.answer_question(question="Dame un resumen de la conversación")
+
         data = {
             "file_name": file_name,
+            "srt": srt_text,
             "context": clean_text,
-            "sentiment": analysis
+            "sentiment": analysis,
+            "summary": summary
         }
 
         mongo.insert_document("audio_transcripts", data)
@@ -75,17 +80,17 @@ async def analyze_audio_file(file_name: str):
 
 
 @router.get("/rag")
-async def rag(question: str, file_name: str):
+def rag(question: str, file_name: str, parametrization: int = 2):
     """
     This endpoint uses the RAG model to answer a question based on the given context.
     """
     try:
         data = mongo.find_document("audio_transcripts", {"file_name": file_name})
 
-        context = data['context']
+        context = data['srt']
 
-        rag = RAG(context=context)
-        answer = rag.answer_question(question=question)
+        rag_engine = RAG(context=context, file_name=file_name, parametrization=parametrization)
+        answer = rag_engine.answer_question(question=question)
 
     except Exception as e:
         logger.error(e)
