@@ -1,11 +1,15 @@
 import streamlit as st
 from PIL import Image
 
+
+
 # Set page configuration
 st.set_page_config(
     page_title="ClientHero",
     page_icon="🚀",
 )
+
+st.image('./images/Logo 1.png', width=300)
 
 # Function to resize images
 def resize_image(image_path, size=(500, 350)):
