@@ -43,5 +43,11 @@ class FireStore():
         
         return file_buffer
 
+    async def list_files(self, unique_id: str):
+        bucket = storage.bucket()
+        blobs = bucket.list_blobs(prefix=f'{unique_id}/')
+
+        return [blob.name.split('/')[-1] for blob in blobs]
+
 
 firebase = FireStore()

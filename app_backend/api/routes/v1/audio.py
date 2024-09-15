@@ -7,6 +7,7 @@ from helpers.parser import parse_srt
 from helpers.ai_helper import Agent
 from helpers.mongo_helper import Mongo
 from helpers.firebase_helper import firebase
+from helpers.rag_helper import RAG
 from fastapi import APIRouter, File, UploadFile
 from tempfile import NamedTemporaryFile
 from transformers import pipeline
@@ -32,6 +33,13 @@ async def analyze_audio_file(file_name: str):
     This endpoint uploads a file and returns the transcription of the audio file using OpenAI SDK.
     """
     try:
+        data = mongo.find_document("audio_transcripts", {"file_name": file_name})
+
+        if data:
+            data["_id"] = str(data["_id"])
+
+            return {"transcription": data}
+
         file = await firebase.get_file(file_name=file_name, file_type="audio", unique_id="12345")
 
         srt_text = AI.transcript_to_text(file_object=file)
@@ -49,6 +57,7 @@ async def analyze_audio_file(file_name: str):
         clean_text = " ".join(sentences)
 
         data = {
+            "file_name": file_name,
             "context": clean_text,
             "sentiment": analysis
         }
@@ -63,3 +72,23 @@ async def analyze_audio_file(file_name: str):
         data["_id"] = str(data["_id"])
 
     return {"transcription": data}
+
+
+@router.get("/rag")
+async def rag(question: str, file_name: str):
+    """
+    This endpoint uses the RAG model to answer a question based on the given context.
+    """
+    try:
+        data = mongo.find_document("audio_transcripts", {"file_name": file_name})
+
+        context = data['context']
+
+        rag = RAG(context=context)
+        answer = rag.answer_question(question=question)
+
+    except Exception as e:
+        logger.error(e)
+        return {"message": "An error occurred while answering the question."}
+
+    return {"answer": answer}
