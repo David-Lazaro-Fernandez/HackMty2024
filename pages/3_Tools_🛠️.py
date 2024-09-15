@@ -23,6 +23,24 @@ def navigate_to(page):
     st.query_params.update(page=page)
      # Rerun the app to apply the query params
 
+
+# Function to plot sentiment over time
+def plot_sentiment_over_time(sentiments):
+    # Extract start, end, and sentiment scores
+    time_data = [(item["data"]["start"], item["data"]["end"], item["sentiment"]["score"]) for item in sentiments]
+    df = pd.DataFrame(time_data, columns=["start", "end", "score"])
+
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    plt.plot(df["end"], df["score"], marker='o', linestyle='-', color='b')
+    plt.title('Sentiment Scores Over Time')
+    plt.xlabel('Time (seconds)')
+    plt.ylabel('Sentiment Score')
+    plt.grid(True)
+
+    # Display plot in Streamlit
+    st.pyplot(plt)
+    
 # Check the query parameters to determine which page to display
 query_params = st.query_params
 page = query_params.get("page", "home")
@@ -70,20 +88,9 @@ elif page == "page1":
         if upload_response.status_code == 200:
             st.success("File uploaded successfully!")
             
-            if st.button("Download Heatmap"):
-
-                download_url = f"http://10.22.238.73:8000/v1/datastore/download?file_name={uploaded_file.name}&file_type=video&media_type=video%2Fmp4"
-                st.markdown(f"[Download Video]({download_url})")
-                download = requests.get(download_url)
-                if download.status_code == 200:
-                    st.success("Video visualization in progress")
-                    with open(uploaded_file.name, "wb") as f:
-                        f.write(download.content)
-                    st.video(uploaded_file.name)
-                else:
-                    st.error("Failed to analyze the file.")
-        else:
-            st.error("Failed to upload file.")
+            if st.button("Analyze File"):
+                # Call the analysis endpoint
+                analyze_url = f"http://"
     
     if st.button("Back to Home"):
         navigate_to("home")
@@ -111,10 +118,20 @@ elif page == "page2":
                 if analyze_response.status_code == 200:
                     st.success("File analyzed successfully!")
                     analysis_result = analyze_response.json()
-                    st.write("Analysis Result:")
                     
-                    transcription = analysis_result.transcription
-                    st.write(transcription)
+                    st.subheader("Summary:")
+                    st.write(analysis_result["transcription"]["summary"])
+                    
+                    st.subheader("Context:")
+                    st.write(analysis_result["transcription"]["context"])
+
+                    # Plot sentiment over time
+                    st.subheader("Sentiment Over Time:")
+                    plot_sentiment_over_time(analysis_result["transcription"]["sentiment"])
+
+
+                    
+
                     
                 else:
                     st.error("Failed to analyze the file.")
