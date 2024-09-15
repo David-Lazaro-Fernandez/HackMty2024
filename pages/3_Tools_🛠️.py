@@ -1,6 +1,8 @@
 import streamlit as st
 from PIL import Image
-
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # Set page configuration
@@ -60,23 +62,60 @@ elif page == "page1":
     
     if uploaded_file is not None:
         st.write("Uploaded file:", uploaded_file.name)
+        
+        # Send the file to the FastAPI backend
+        files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
+        upload_response = requests.post("http://10.22.238.73:8000/v1/datastore/upload", files=files)
+        
+        if upload_response.status_code == 200:
+            st.success("File uploaded successfully!")
+            
+            if st.button("Analyze File"):
+                # Call the analysis endpoint
+                analyze_url = f"http://"
     
     if st.button("Back to Home"):
         navigate_to("home")
 
 elif page == "page2":
-    st.subheader("Upload videos to start analyzing.")
+    st.subheader("Upload audio file to start analyzing.")
     st.divider()
-    uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
+    uploaded_file = st.file_uploader("Upload an audio file", type=["mp3", "wav", "ogg", "flac", "m4a"])
     
     if uploaded_file is not None:
         st.write("Uploaded file:", uploaded_file.name)
+        
+        # Send the file to the FastAPI backend
+        files = {"file": (uploaded_file.name, uploaded_file, uploaded_file.type)}
+        upload_response = requests.post("http://10.22.238.73:8000/v1/datastore/upload", files=files)
+        
+        if upload_response.status_code == 200:
+            st.success("File uploaded successfully!")
+            
+            if st.button("Analyze File"):
+                # Call the analysis endpoint
+                analyze_url = f"http://10.22.238.73:8000/v1/audio/analyze?file_name={uploaded_file.name}"
+                analyze_response = requests.get(analyze_url)
+                
+                if analyze_response.status_code == 200:
+                    st.success("File analyzed successfully!")
+                    analysis_result = analyze_response.json()
+                    st.write("Analysis Result:")
+                    
+                    transcription = analysis_result.transcription
+                    st.write(transcription)
+                    
+                else:
+                    st.error("Failed to analyze the file.")
+        else:
+            st.error("Failed to upload file.")
     
     if st.button("Back to Home"):
         navigate_to("home")
 
+
 elif page == "page3":
-    st.subheader("Upload videos to start analyzing.")
+    st.subheader("Upload auduio file to start analyzing.")
     st.divider()
     uploaded_file = st.file_uploader("Upload a video file", type=["mp4", "mov", "avi", "mkv"])
     
